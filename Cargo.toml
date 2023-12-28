@@ -2,10 +2,20 @@
 name = "oiio"
 version = "0.1.0"
 authors = ["Anders Langlands <anderslanglands@gmail.com>"]
-edition = "2018"
+edition = "2021"
+build="build.rs"
+
+[package.metadata.vcpkg]
+git = "https://github.com/microsoft/vcpkg"
+rev = "c869686"
+dependencies = ["openimageio:x64-windows-static-md"]
 
 [dependencies]
 num-traits = "0.2.6"
+vcpkg = "0.2.15"
+
+
 
 [build-dependencies]
 cmake = "0.1"
+vcpkg = "0.2.15"

@@ -19,7 +19,7 @@ pub fn write_image_f32(
     data: &[f32],
 ) {
     if width * height * num_channels != data.len() {
-        panic!(format!("Tried to write image {} {}x{}x{} ({}) but supplied data with length {}", filename, width, height, num_channels, width*height*num_channels, data.len()));
+        panic!("Tried to write image {} {}x{}x{} ({}) but supplied data with length {}", filename, width, height, num_channels, width*height*num_channels, data.len());
     }
 
     let spec = imageio::ImageSpec::with_dimensions(

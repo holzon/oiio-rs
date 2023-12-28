@@ -24,13 +24,13 @@ struct TypeDesc {
     int arraylen;
 };
 
-typedef struct OIIO::ImageSpec* ImageSpec;
-typedef struct OIIO::ImageInput* ImageInput;
-typedef struct OIIO::ImageOutput* ImageOutput;
-typedef struct OIIO::ImageBuf* ImageBuf;
-typedef struct OIIO::ustring ustring;
+typedef OIIO::ImageSpec* ImageSpec;
+typedef OIIO::ImageInput* ImageInput;
+typedef OIIO::ImageOutput* ImageOutput;
+typedef OIIO::ImageBuf* ImageBuf;
+typedef OIIO::ustring ustring;
 typedef struct OIIO::ROI ROI;
-typedef struct OIIO::ParamValue* ParamValue;
+typedef OIIO::ParamValue* ParamValue;
 
 extern "C" {
 

@@ -1,6 +1,29 @@
-use cmake;
-use std::path::Path;
+extern crate cmake;
+use cmake::Config;
+use std::env;
+use std::path::PathBuf;
 
+
+fn main()
+{
+    let lib = vcpkg::find_package("openimageio").unwrap();
+
+    // for metadata in lib.cargo_metadata.iter() 
+    // {
+    //     println!("{}", metadata);
+    // }
+    
+    println!("oiio: {:?}", lib);
+    let dst = Config::new("coiio").very_verbose(true).build();       
+
+    println!("cargo:rustc-link-search=native={}", dst.display());
+    println!("cargo:rustc-link-lib=static=coiio");    
+    println!("cargo:rustc-link-lib=shell32");    
+
+    // println!("cargo:rerun-if-changed=wrapper.h");
+    // println!("cargo:rerun-if-changed=imglib.h");
+}
+/*
 pub fn main() {
     let oiio_root = std::env::var("OIIO_ROOT")
         .expect("OIIO_ROOT must be set to root of OIIO installation");
@@ -61,4 +84,4 @@ pub fn main() {
     println!("cargo:rustc-link-lib=dylib=stdc++");
     #[cfg(target_os = "macos")]
     println!("cargo:rustc-link-lib=dylib=c++");
-}
+}*/

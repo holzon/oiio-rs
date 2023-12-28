@@ -1,5 +1,6 @@
 use crate::ffi;
 use crate::imageio;
+use crate::imageio::ROI;
 use crate::typedesc::TypeDesc;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_void;
@@ -201,4 +202,11 @@ impl ImageBuf {
     pub fn nchannels(&self) -> i32 {
         self.spec().nchannels()
     }
+
+    pub fn get_pixels(&self, roi: ROI, format: TypeDesc, result: *mut c_void, xstride: i64, ystride: i64, zstride: i64) {
+        unsafe {
+            ffi::ImageBuf_get_pixels(self.buf, roi, format, result, xstride, ystride, zstride);
+        }
+    }
+
 }

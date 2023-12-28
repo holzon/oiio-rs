@@ -37,6 +37,13 @@ pub struct ImageBuf_api {
 pub type ImageBuf = *mut ImageBuf_api;
 
 #[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct ImageCache_api {
+    _unused: [u8; 0],
+}
+pub type ImageCache = *mut ImageCache_api;
+
+#[repr(C)]
 #[derive(PartialEq, Eq, Hash, Copy, Clone)]
 pub struct Ustring {
     pub ptr: *const c_char,
@@ -239,6 +246,7 @@ extern "C" {
     pub(crate) fn ImageBuf_spec(imbuf: ImageBuf) -> ImageSpec;
     pub(crate) fn ImageBuf_localpixels(imbuf: ImageBuf) -> *const c_void;
     pub(crate) fn ImageBuf_localpixels_mut(imbuf: ImageBuf) -> *mut c_void;
+    pub(crate) fn ImageBuf_get_pixels(imbuf: ImageBuf, roi: crate::imageio::ROI, format: TypeDesc, result: *mut c_void, xstride: i64, ystride: i64, zstride: i64);
 
     pub(crate) fn ImageBufAlgo_compare(
         a: ImageBuf,
@@ -277,4 +285,23 @@ extern "C" {
     pub(crate) fn ustring_create(s: *const c_char) -> *const c_char;
     pub(crate) fn ustring_length(s: *const c_char) -> usize;
     pub(crate) fn ustring_hash(s: *const c_char) -> u64;
+
+    pub(crate) fn ImageCache_create() -> ImageCache;
+    pub(crate) fn ImageCache_destroy(cache: ImageCache);
+
+    pub(crate) fn ImageCache_set_int_attribute(
+        cache: ImageCache,
+        name: *const c_char,
+        value: i32,
+    ) -> bool;
+    pub(crate) fn ImageCache_set_float_attribute(
+        cache: ImageCache,
+        name: *const c_char,
+        value: f32,
+    ) -> bool;
+    pub(crate) fn ImageCache_set_string_attribute(
+        cache: ImageCache,
+        name: *const c_char,
+        value: *const c_char,
+    ) -> bool;
 }

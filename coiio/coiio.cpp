@@ -1,5 +1,6 @@
 #include <OpenImageIO/imagebuf.h>
 #include <OpenImageIO/imagebufalgo.h>
+#include <OpenImageIO/imagecache.h>
 #include <OpenImageIO/imageio.h>
 #include <OpenImageIO/ustring.h>
 #include <iostream>
@@ -28,6 +29,7 @@ typedef OIIO::ImageSpec* ImageSpec;
 typedef OIIO::ImageInput* ImageInput;
 typedef OIIO::ImageOutput* ImageOutput;
 typedef OIIO::ImageBuf* ImageBuf;
+typedef OIIO::ImageCache* ImageCache;
 typedef OIIO::ustring ustring;
 typedef struct OIIO::ROI ROI;
 typedef OIIO::ParamValue* ParamValue;
@@ -251,6 +253,10 @@ const void* ImageBuf_localpixels(ImageBuf imbuf) {
 
 void* ImageBuf_localpixels_mut(ImageBuf imbuf) { return imbuf->localpixels(); }
 
+void ImageBuf_get_pixels(ImageBuf imbuf, ROI roi, TypeDesc format, void *result, int64_t xstride, int64_t ystride, int64_t zstride) {
+    imbuf->get_pixels(roi, *(OIIO::TypeDesc*)&format, result, xstride, ystride, zstride);
+}
+
 OIIO::ImageBufAlgo::CompareResults ImageBufAlgo_compare(ImageBuf a, ImageBuf b,
                                                         float failthresh,
                                                         float warnthresh) {
@@ -305,5 +311,25 @@ size_t ustring_length(const char* us) {
 }
 
 size_t ustring_hash(const char* us) { return ((OIIO::ustring*)&us)->hash(); }
+
+ImageCache ImageCache_create() {
+    return OIIO::ImageCache::create();
+}
+
+void ImageCache_destroy(ImageCache cache) {
+    OIIO::ImageCache::destroy(cache);
+}
+
+bool ImageCache_set_string_attribute(ImageCache cache, const char *name, const char *val) {
+    return cache->attribute(name, OIIO::TypeString, &val);
+}
+
+bool ImageCache_set_int_attribute(ImageCache cache, const char *name, int val) {
+    return cache->attribute(name, OIIO::TypeInt, &val);
+}
+
+bool ImageCache_set_float_attribute(ImageCache cache, const char *name, float val) {
+    return cache->attribute(name, OIIO::TypeFloat, &val);
+}
 
 } // extern "C"

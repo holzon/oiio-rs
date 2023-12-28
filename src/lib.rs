@@ -1,6 +1,7 @@
 pub mod ffi;
 pub mod imagebuf;
 pub mod imagebufalgo;
+pub mod imagecache;
 pub mod imageio;
 pub mod typedesc;
 pub use ffi::Ustring;

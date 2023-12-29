@@ -1,7 +1,7 @@
 use crate::ffi;
 use crate::imageio;
 use crate::imageio::ROI;
-use crate::typedesc::TypeDesc;
+use crate::typedesc::{TypeDesc, UINT8};
 use std::ffi::{CStr, CString};
 use std::os::raw::c_void;
 use std::env;
@@ -204,9 +204,9 @@ impl ImageBuf {
         self.spec().nchannels()
     }
 
-    pub fn get_pixels(&self, roi: ROI, format: TypeDesc, result: *mut c_void, xstride: i64, ystride: i64, zstride: i64) {
+    pub fn get_pixels<T: imageio::ImageElement>(&self, roi: ROI, format: TypeDesc, result: &mut [T], xstride: i64, ystride: i64, zstride: i64) {
         unsafe {
-            ffi::ImageBuf_get_pixels(self.buf, roi, format, result, xstride, ystride, zstride);
+            ffi::ImageBuf_get_pixels(self.buf, roi, format, result.as_mut_ptr() as *mut T as *mut c_void, xstride, ystride, zstride);
         }
     }
 
@@ -214,6 +214,8 @@ impl ImageBuf {
 
 #[cfg(test)]
 mod tests {
+    use crate::imageio::AUTOSTRIDE;
+
     use super::*;
 
     #[test]
@@ -222,6 +224,24 @@ mod tests {
         let image_buf = ImageBuf::create(&filename).unwrap();
         assert_eq!(2, image_buf.width());
         assert_eq!(2, image_buf.height());
+        assert_eq!(3, image_buf.nchannels());
+    }
+
+
+    fn do_vecs_match<T: PartialEq>(a: &Vec<T>, b: &Vec<T>) -> bool {
+        let matching = a.iter().zip(b.iter()).filter(|&(a, b)| a == b).count();
+        matching == a.len() && matching == b.len()
+    }
+
+    #[test]
+    fn get_pixels() {
+        let filename = env::var("CARGO_MANIFEST_DIR").unwrap() + "/resources/test/2x2.png";
+        let image_buf = ImageBuf::create(&filename).unwrap();
+        let roi = ROI::new(0, 2, 0, 2);
+        let mut result = vec![0u8; 12];
+        image_buf.get_pixels(roi, UINT8, &mut result[..], AUTOSTRIDE, AUTOSTRIDE, AUTOSTRIDE);
+        let expected = vec!(255u8, 0, 255, 0, 255, 255, 255, 255, 0, 128, 128, 128);
+        assert_eq!(true, do_vecs_match(&expected, &result));
     }
 }
 

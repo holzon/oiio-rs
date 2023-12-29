@@ -4,6 +4,7 @@ use crate::imageio::ROI;
 use crate::typedesc::TypeDesc;
 use std::ffi::{CStr, CString};
 use std::os::raw::c_void;
+use std::env;
 
 pub struct ImageBuf {
     pub buf: ffi::ImageBuf,
@@ -210,3 +211,17 @@ impl ImageBuf {
     }
 
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn load_image_buf() {
+        let filename = env::var("CARGO_MANIFEST_DIR").unwrap() + "/resources/test/2x2.png";
+        let image_buf = ImageBuf::create(&filename).unwrap();
+        assert_eq!(2, image_buf.width());
+        assert_eq!(2, image_buf.height());
+    }
+}
+

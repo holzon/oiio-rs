@@ -386,6 +386,14 @@ impl ImageElement for u8 {
     const ARRAYLEN: i32 = 0;
 }
 
+impl ImageElement for u16 {
+    const BASETYPE: typedesc::BaseType = typedesc::BaseType::UINT16;
+    const AGGREGATE: typedesc::Aggregate = typedesc::Aggregate::SCALAR;
+    const VECSEMANTICS: typedesc::VecSemantics =
+        typedesc::VecSemantics::NOSEMANTICS;
+    const ARRAYLEN: i32 = 0;
+}
+
 impl ImageElement for f32 {
     const BASETYPE: typedesc::BaseType = typedesc::BaseType::FLOAT;
     const AGGREGATE: typedesc::Aggregate = typedesc::Aggregate::SCALAR;

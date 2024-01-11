@@ -304,14 +304,14 @@ impl Drop for ImageSpec {
 
 #[repr(C)]
 pub struct ROI {
-    xbegin: i32,
-    xend: i32,
-    ybegin: i32,
-    yend: i32,
-    zbegin: i32,
-    zend: i32,
-    chbegin: i32,
-    chend: i32,
+    pub xbegin: i32,
+    pub xend: i32,
+    pub ybegin: i32,
+    pub yend: i32,
+    pub zbegin: i32,
+    pub zend: i32,
+    pub chbegin: i32,
+    pub chend: i32,
 }
 
 impl ROI {

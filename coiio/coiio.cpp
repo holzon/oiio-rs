@@ -257,6 +257,8 @@ void ImageBuf_get_pixels(ImageBuf imbuf, ROI roi, TypeDesc format, void *result,
     imbuf->get_pixels(roi, *(OIIO::TypeDesc*)&format, result, xstride, ystride, zstride);
 }
 
+int ImageBuf_nmiplevels(ImageBuf imbuf) { return imbuf->nmiplevels(); }
+
 OIIO::ImageBufAlgo::CompareResults ImageBufAlgo_compare(ImageBuf a, ImageBuf b,
                                                         float failthresh,
                                                         float warnthresh) {

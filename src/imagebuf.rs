@@ -210,6 +210,12 @@ impl ImageBuf {
         }
     }
 
+    pub fn nmiplevels(&self) -> i32 {
+        unsafe {
+            ffi::ImageBuf_nmiplevels(self.buf)
+        }
+    }
+
 }
 
 #[cfg(test)]

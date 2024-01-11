@@ -247,6 +247,7 @@ extern "C" {
     pub(crate) fn ImageBuf_localpixels(imbuf: ImageBuf) -> *const c_void;
     pub(crate) fn ImageBuf_localpixels_mut(imbuf: ImageBuf) -> *mut c_void;
     pub(crate) fn ImageBuf_get_pixels(imbuf: ImageBuf, roi: crate::imageio::ROI, format: TypeDesc, result: *mut c_void, xstride: i64, ystride: i64, zstride: i64);
+    pub(crate) fn ImageBuf_nmiplevels(imbuf: ImageBuf) -> i32;
 
     pub(crate) fn ImageBufAlgo_compare(
         a: ImageBuf,

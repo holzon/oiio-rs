@@ -201,6 +201,17 @@ extern "C" {
         ystride: i64,
         zstride: i64,
     ) -> bool;
+    pub(crate) fn ImageOutput_write_tile(
+        io: ImageOutput,
+        x: i64,
+        y: i64,
+        z: i64,
+        fmt: TypeDesc,
+        data: *const c_void,
+        xstride: i64,
+        ystride: i64,
+        zstride: i64,
+    ) -> bool;
     pub(crate) fn ImageOutput_geterror(io: ImageOutput) -> *const c_char;
     pub(crate) fn ImageOutput_destroy(io: ImageOutput);
 
@@ -282,6 +293,16 @@ extern "C" {
         channel_order: *const i32,
         n_channel_order: i32,
     ) -> ImageBuf;
+
+    pub(crate) fn ImageBufAlgo_paste(
+        dst: ImageBuf,
+        xbegin: i32,
+        ybegin: i32,
+        zbegin: i32,
+        chbegin: i32,
+        src: ImageBuf,
+        roi: crate::imageio::ROI,
+    ) -> bool;
 
     pub(crate) fn ustring_create(s: *const c_char) -> *const c_char;
     pub(crate) fn ustring_length(s: *const c_char) -> usize;

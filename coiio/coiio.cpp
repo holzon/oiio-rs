@@ -174,6 +174,13 @@ bool ImageOutput_write_image(ImageOutput io, TypeDesc fmt, const void* data,
                            zstride);
 }
 
+bool ImageOutput_write_tile(ImageOutput io, int x, int y, int z, TypeDesc fmt, const void* data,
+                             ptrdiff_t xstride, ptrdiff_t ystride,
+                             ptrdiff_t zstride) {
+    return io->write_tile(x, y, z, *(OIIO::TypeDesc*)&fmt, data, xstride, ystride,
+                           zstride);
+}
+
 static std::string ImageOutput_errorstr;
 const char* ImageOutput_geterror(ImageOutput io) {
     ImageOutput_errorstr = io->geterror();
@@ -302,6 +309,10 @@ ImageBuf ImageBufAlgo_channels(ImageBuf src, int nchannels, int* channel_order,
     return new OIIO::ImageBuf(OIIO::ImageBufAlgo::channels(
         *src, n_channel_order,
         OIIO::cspan<int>(channel_order, n_channel_order)));
+}
+
+bool ImageBufAlgo_paste(ImageBuf dst, int xbegin, int ybegin, int zbegin, int chbegin, ImageBuf src, ROI srcroi) {
+    return OIIO::ImageBufAlgo::paste(*dst, xbegin, ybegin, zbegin, chbegin, *src, srcroi);
 }
 
 const char* ustring_create(const char* str) {

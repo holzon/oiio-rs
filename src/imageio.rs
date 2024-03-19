@@ -466,6 +466,36 @@ impl ImageOutput {
                 .into_owned())
         }
     }
+
+    pub unsafe fn write_tile<T: ImageElement>(
+        &self,
+        x: i64,
+        y: i64,
+        z: i64,
+        data: &[T],
+        xstride: i64,
+        ystride: i64,
+        zstride: i64,
+    ) -> Result<(), String> {
+        let success = ffi::ImageOutput_write_tile(
+            self.io,
+            x,
+            y,
+            z,
+            T::type_desc(),
+            data.as_ptr() as *const T as *const c_void,
+            xstride,
+            ystride,
+            zstride,
+        );
+        if success {
+            Ok(())
+        } else {
+            Err(CStr::from_ptr(ffi::ImageOutput_geterror(self.io))
+                .to_string_lossy()
+                .into_owned())
+        }
+    }
 }
 
 impl Drop for ImageOutput {

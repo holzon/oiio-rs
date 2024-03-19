@@ -119,3 +119,17 @@ pub fn colorconvert(
         }
     }
 }
+
+pub fn paste(
+    dst: &mut ImageBuf,
+    xbegin: i32,
+    ybegin: i32,
+    zbegin: i32,
+    chbegin: i32,
+    src: &ImageBuf,
+    roi: ROI,
+) -> bool {
+    unsafe {
+        ffi::ImageBufAlgo_paste(dst.buf, xbegin, ybegin, zbegin, chbegin, src.buf, roi)
+    }
+}

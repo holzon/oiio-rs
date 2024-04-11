@@ -21,6 +21,11 @@ add_library(coiio STATIC coiio.cpp)
 #     ${LIB_HALF})
 # target_compile_options(coiio PRIVATE "-Wno-deprecated-register" "-D_GLIBCXX_USE_CXX11_ABI=0")
 
+find_package(libraw CONFIG REQUIRED)
+# non-thread-safe
+target_link_libraries(coiio PUBLIC libraw::raw)
+# thread-safe
+# target_link_libraries(main PRIVATE libraw::raw_r)
 find_package(OpenImageIO CONFIG REQUIRED)
 
 target_link_libraries(coiio PUBLIC
